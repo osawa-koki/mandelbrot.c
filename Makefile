@@ -1,4 +1,3 @@
-
 CC = gcc
 SOURCES = src/main.c
 OBJECTS = $(SOURCES:.c=.o)
