@@ -9,6 +9,7 @@
 #define Y_MAX 1.5
 #define MAX_ITERATIONS 1000
 #define MAX_COLOR_VALUE 255
+#define OUTPUT_FILE "output.png"
 
 int main() {
 
@@ -53,7 +54,7 @@ int main() {
   }
 
   // 画像をファイルに出力する
-  FILE *fp = fopen("output.png", "wb");
+  FILE *fp = fopen(OUTPUT_FILE, "wb");
   png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   png_infop info = png_create_info_struct(png);
   png_init_io(png, fp);
