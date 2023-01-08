@@ -1,8 +1,12 @@
 #include <png.h>
 #include <stdlib.h>
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 500
+#define HEIGHT 500
+#define X_MIN -2.5
+#define X_MAX 1.0
+#define Y_MIN -1.5
+#define Y_MAX 1.5
 #define MAX_ITERATIONS 1000
 #define MAX_COLOR_VALUE 255
 
@@ -26,32 +30,24 @@ int main() {
       png_bytep px = &(row[x * 4]);
 
       // マンデルブロ集合の計算を行う
-      double a = (double)x / (double)width * 3.5 - 2.5;
-      double b = (double)y / (double)height * 2.0 - 1.0;
-      double ca = a;
-      double cb = b;
-      int n = 0;
-      while (n < MAX_ITERATIONS) {
-        double aa = a * a - b * b;
-        double bb = 2 * a * b;
-        a = aa + ca;
-        b = bb + cb;
-        if (a * a + b * b > 4.0) {
-          break;
-        }
-        n++;
+      double x0 = X_MIN + (X_MAX - X_MIN) * x / width;
+      double y0 = Y_MIN + (Y_MAX - Y_MIN) * y / height;
+      double x1 = 0.0;
+      double y1 = 0.0;
+      int i = 0;
+      while (x1 * x1 + y1 * y1 <= 2 * 2 && i < MAX_ITERATIONS) {
+        double x2 = x1 * x1 - y1 * y1 + x0;
+        double y2 = 2 * x1 * y1 + y0;
+        x1 = x2;
+        y1 = y2;
+        i++;
       }
 
-      // マンデルブロ集合の計算結果を元に画素の色を決定する
-      int brightness = 0;
-      if (n == MAX_ITERATIONS) {
-        brightness = 0;
-      } else {
-        brightness = MAX_COLOR_VALUE * n / MAX_ITERATIONS;
-      }
-      px[0] = brightness;
-      px[1] = brightness;
-      px[2] = brightness;
+      // マンデルブロ集合の計算結果を色に変換する
+      int color = i * MAX_COLOR_VALUE / MAX_ITERATIONS;
+      px[0] = color;
+      px[1] = color;
+      px[2] = color;
       px[3] = MAX_COLOR_VALUE;
     }
   }
