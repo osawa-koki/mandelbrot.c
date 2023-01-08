@@ -4,11 +4,12 @@ SOURCES = src/main.c
 OBJECTS = $(SOURCES:.c=.o)
 EXECUTABLE = main
 BUILD_DIR = build
+LDFLAGS = -lpng
 
 all: $(BUILD_DIR) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(BUILD_DIR)/$@
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $(BUILD_DIR)/$@
 
 %.o: %.c
 	$(CC) -c $< -o $@
